@@ -1,6 +1,6 @@
 import 'package:brandie/models/constants.dart';
-import 'package:brandie/view/auth/LoginScreen.dart';
-import 'package:brandie/view/auth/sign_in.dart';
+import 'package:brandie/view/auth/screens/LoginScreen.dart';
+import 'package:brandie/view/auth/screens/sign_in.dart';
 import 'package:flutter/material.dart';
 
 class HomePageScreen extends StatelessWidget {
@@ -9,7 +9,7 @@ class HomePageScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(kPrimaryColor),
+      backgroundColor: Theme.of(context).primaryColor,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -45,8 +45,7 @@ class HomePageScreen extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
-                  Navigator.of(context)
-                      .pushReplacementNamed(LoginScreen.routeName);
+                  Navigator.of(context).pushNamed(LoginScreen.routeName);
                 },
                 child: Text(
                   'Log in',
@@ -69,15 +68,10 @@ class HomePageScreen extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
-                  Navigator.of(context)
-                      .pushReplacementNamed(SignInScreen.routeName);
+                  Navigator.of(context).pushNamed(SignUpScreen.routeName);
                 },
                 child: const Text(
-                  'Sign in',
-                  // style: Theme.of(context)
-                  //     .textTheme
-                  //     .button
-                  //     ?.copyWith(color: Theme.of(context).primaryColor),
+                  'Sign up',
                 ),
               ),
             ],

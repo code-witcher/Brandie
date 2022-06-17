@@ -15,4 +15,9 @@ const kPrimaryColorList = {
 };
 
 const kAccentColor = Color(0xFFF8CACE);
+const kBlue = Color(0xFFECF4FA);
+const kYellowish = Color(0xFFFAF2EB);
+const kPink = Color(0xFFFBEBF7);
+const kIconsColor = Color(0xFFDB9686);
+
 const kLightColor = Colors.white;

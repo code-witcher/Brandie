@@ -1,4 +1,5 @@
 import 'package:brandie/view/products/screens/main_page.dart';
+import 'package:brandie/view/products/screens/product_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -24,16 +25,33 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        appBarTheme: AppBarTheme(
+        fontFamily: 'Sulphur',
+        textTheme: const TextTheme(
+          headlineLarge: TextStyle(
+            color: kTextColor,
+          ),
+          headlineMedium: TextStyle(
+            color: kTextColor,
+          ),
+          headlineSmall:
+              TextStyle(color: kTextColor, fontWeight: FontWeight.bold),
+          bodyLarge: TextStyle(
+            color: kTextColor,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        appBarTheme: const AppBarTheme(
           elevation: 0,
         ),
         primarySwatch: const MaterialColor(kPrimaryColor, kPrimaryColorList),
+        canvasColor: kLightColor,
       ),
       home: const HomePageScreen(),
       routes: {
         SignUpScreen.routeName: (ctx) => const SignUpScreen(),
         LoginScreen.routeName: (ctx) => const LoginScreen(),
         MainPage.routeName: (ctx) => const MainPage(),
+        ProductDetails.routeName: (ctx) => const ProductDetails(),
       },
     );
   }

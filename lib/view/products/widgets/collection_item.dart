@@ -1,9 +1,15 @@
 import 'dart:io';
+import 'dart:math';
 
+import 'package:brandie/models/constants.dart';
 import 'package:flutter/material.dart';
 
 class CollectionItem extends StatelessWidget {
-  const CollectionItem({Key? key}) : super(key: key);
+  const CollectionItem(
+      {Key? key, required this.index, required this.currentIndex})
+      : super(key: key);
+  final int index;
+  final int currentIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -12,21 +18,23 @@ class CollectionItem extends StatelessWidget {
       child: Column(
         children: [
           CircleAvatar(
+            backgroundColor: kColorsList[Random().nextInt(4)],
             radius: 40,
             backgroundImage: FileImage(File('')),
           ),
-          Padding(
-            padding: const EdgeInsets.all(10.0),
+          const Padding(
+            padding: EdgeInsets.all(10.0),
             child: Text('Men'),
           ),
-          Container(
-            height: 7,
-            width: 7,
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
-              borderRadius: BorderRadius.circular(500),
+          if (index == currentIndex)
+            Container(
+              height: 7,
+              width: 7,
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+                borderRadius: BorderRadius.circular(500),
+              ),
             ),
-          ),
         ],
       ),
     );

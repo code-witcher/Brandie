@@ -13,10 +13,10 @@ class ProductsList extends StatelessWidget {
         itemBuilder: (ctx, i) => const ProductItem(),
         itemCount: 10,
         gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-          maxCrossAxisExtent: 300,
+          maxCrossAxisExtent: 290,
           crossAxisSpacing: 16,
           mainAxisSpacing: 16,
-          mainAxisExtent: 300,
+          mainAxisExtent: 320,
         ),
       ),
     );

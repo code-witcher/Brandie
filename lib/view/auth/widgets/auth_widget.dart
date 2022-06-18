@@ -14,7 +14,10 @@ class AuthWidget extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
+          padding: EdgeInsets.symmetric(
+            vertical: MediaQuery.of(context).size.height * 0.09,
+            horizontal: 16,
+          ),
           height: double.infinity,
           width: double.infinity,
           decoration: BoxDecoration(
@@ -39,119 +42,125 @@ class AuthWidget extends StatelessWidget {
             height: MediaQuery.of(context).size.height * 0.57,
             padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 28),
             child: Form(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Column(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 70),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      if (!isLogin)
-                        TextFormField(
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            prefixIcon: Icon(Icons.person_outline_rounded),
-                            hintText: 'Name',
+                      Column(
+                        children: [
+                          if (!isLogin)
+                            TextFormField(
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                prefixIcon: Icon(Icons.person_outline_rounded),
+                                hintText: 'Name',
+                              ),
+                              keyboardType: TextInputType.name,
+                              textCapitalization: TextCapitalization.words,
+                            ),
+                          const SizedBox(
+                            height: 8,
                           ),
-                          keyboardType: TextInputType.name,
-                          textCapitalization: TextCapitalization.words,
-                        ),
-                      const SizedBox(
-                        height: 8,
+                          TextFormField(
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              prefixIcon: Icon(Icons.person),
+                              hintText: 'Email',
+                            ),
+                            keyboardType: TextInputType.name,
+                            textCapitalization: TextCapitalization.words,
+                          ),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          TextFormField(
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              prefixIcon: Icon(Icons.person),
+                              hintText: 'Password',
+                            ),
+                            keyboardType: TextInputType.name,
+                            textCapitalization: TextCapitalization.words,
+                          ),
+                        ],
                       ),
-                      TextFormField(
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          prefixIcon: Icon(Icons.person),
-                          hintText: 'Email',
+                      if (isLogin)
+                        TextButton(
+                          style: TextButton.styleFrom(
+                              alignment: AlignmentDirectional.centerEnd),
+                          onPressed: () {},
+                          child: const Text('Forget password?'),
                         ),
-                        keyboardType: TextInputType.name,
-                        textCapitalization: TextCapitalization.words,
-                      ),
-                      const SizedBox(
-                        height: 8,
-                      ),
-                      TextFormField(
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          prefixIcon: Icon(Icons.person),
-                          hintText: 'Password',
+                      if (!isLogin)
+                        const SizedBox(
+                          height: 15,
                         ),
-                        keyboardType: TextInputType.name,
-                        textCapitalization: TextCapitalization.words,
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          // primary: kLightColor,
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pushReplacementNamed(
+                            MainPage.routeName,
+                          );
+                        },
+                        child: Text(
+                          isLogin ? 'Log in' : 'Sign Up',
+                        ),
+                      ),
+                      SizedBox(
+                        height: 32,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: 130,
+                              height: 2,
+                              color: Colors.grey,
+                            ),
+                            const SizedBox(
+                              width: 8,
+                            ),
+                            Text('Or'),
+                            const SizedBox(
+                              width: 8,
+                            ),
+                            Container(
+                              width: 130,
+                              height: 2,
+                              color: Colors.grey,
+                            ),
+                          ],
+                        ),
+                      ),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          side:
+                              BorderSide(color: Theme.of(context).primaryColor),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pushReplacementNamed(
+                            isLogin
+                                ? SignUpScreen.routeName
+                                : LoginScreen.routeName,
+                          );
+                        },
+                        child: Text(isLogin ? 'Sign up' : 'Log in'),
                       ),
                     ],
                   ),
-                  if (isLogin)
-                    TextButton(
-                      style: TextButton.styleFrom(
-                          alignment: AlignmentDirectional.centerEnd),
-                      onPressed: () {},
-                      child: const Text('Forget password?'),
-                    ),
-                  if (!isLogin)
-                    const SizedBox(
-                      height: 15,
-                    ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      // primary: kLightColor,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pushReplacementNamed(
-                        MainPage.routeName,
-                      );
-                    },
-                    child: Text(
-                      isLogin ? 'Log in' : 'Sign Up',
-                    ),
-                  ),
-                  SizedBox(
-                    height: 32,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 130,
-                          height: 2,
-                          color: Colors.grey,
-                        ),
-                        const SizedBox(
-                          width: 8,
-                        ),
-                        Text('Or'),
-                        const SizedBox(
-                          width: 8,
-                        ),
-                        Container(
-                          width: 130,
-                          height: 2,
-                          color: Colors.grey,
-                        ),
-                      ],
-                    ),
-                  ),
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      side: BorderSide(color: Theme.of(context).primaryColor),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pushReplacementNamed(
-                        isLogin
-                            ? SignUpScreen.routeName
-                            : LoginScreen.routeName,
-                      );
-                    },
-                    child: Text(isLogin ? 'Sign up' : 'Log in'),
-                  ),
-                ],
+                ),
               ),
             ),
           ),

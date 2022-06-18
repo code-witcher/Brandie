@@ -19,5 +19,15 @@ const kBlue = Color(0xFFECF4FA);
 const kYellowish = Color(0xFFFAF2EB);
 const kPink = Color(0xFFFBEBF7);
 const kIconsColor = Color(0xFFDB9686);
+const kPurple = Color(0xFFF1EAFA);
+const kTextColor = Colors.black;
+
+const kColorsList = [
+  Color(0xFFF8CACE),
+  Color(0xFFECF4FA),
+  Color(0xFFFAF2EB),
+  Color(0xFFFBEBF7),
+  Color(0xFFF1EAFA),
+];
 
 const kLightColor = Colors.white;

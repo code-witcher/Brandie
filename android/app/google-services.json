@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1039538238245",
+    "firebase_url": "https://brandie-58806-default-rtdb.firebaseio.com",
+    "project_id": "brandie-58806",
+    "storage_bucket": "brandie-58806.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1039538238245:android:da2634c02b808bcf1960cc",
+        "android_client_info": {
+          "package_name": "com.WitcherCode.Brandie.brandie"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1039538238245-agd1t18oi9i7qf7smia2kqljeobkpcra.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBosUQle3Or4abmE4GMBRxylNHsd5I26go"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1039538238245-agd1t18oi9i7qf7smia2kqljeobkpcra.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

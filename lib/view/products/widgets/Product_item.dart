@@ -1,15 +1,20 @@
 import 'package:brandie/models/constants.dart';
+import 'package:brandie/models/products_provider4.dart';
 import 'package:brandie/view/products/screens/product_details.dart';
 import 'package:flutter/material.dart';
 
 class ProductItem extends StatelessWidget {
-  const ProductItem({Key? key}) : super(key: key);
+  const ProductItem({Key? key, required this.product}) : super(key: key);
+  final Product product;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.of(context).pushNamed(ProductDetails.routeName);
+        Navigator.of(context).pushNamed(
+          ProductDetails.routeName,
+          arguments: product.id,
+        );
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -28,7 +33,7 @@ class ProductItem extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Image.network(
-                      'https://i.pinimg.com/564x/e4/07/20/e40720c646c72a70e0b793bfaa8cc37d.jpg',
+                      product.imageUrl,
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -55,7 +60,7 @@ class ProductItem extends StatelessWidget {
                         Expanded(
                           child: FittedBox(
                             child: Text(
-                              '\$60.00',
+                              '\$${product.price}',
                               style: Theme.of(context).textTheme.bodyLarge,
                             ),
                           ),
@@ -65,7 +70,7 @@ class ProductItem extends StatelessWidget {
                         ),
                         Expanded(
                           child: Text(
-                            'Hoodie Rose',
+                            product.name,
                             style: Theme.of(context).textTheme.bodyLarge,
                             overflow: TextOverflow.ellipsis,
                           ),

@@ -1,14 +1,25 @@
 import 'dart:math';
 
 import 'package:brandie/models/constants.dart';
+import 'package:brandie/view/cart/screens/cart_screen.dart';
 import 'package:brandie/view/products/widgets/sized_row.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../../models/products_provider4.dart';
 
 class ProductDetails extends StatelessWidget {
   const ProductDetails({Key? key}) : super(key: key);
   static const routeName = '/product-details';
   @override
   Widget build(BuildContext context) {
+    final dynamic prodId = ModalRoute.of(context)?.settings.arguments;
+    final products = Provider.of<ProductsProvider>(
+      context,
+      listen: false,
+    ).products;
+    final currentProd = products.firstWhere((prod) => prod.id == prodId);
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -28,7 +39,9 @@ class ProductDetails extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pushNamed(CartScreen.routeName);
+            },
             icon: const Icon(
               Icons.shopping_cart,
               color: kTextColor,
@@ -52,17 +65,16 @@ class ProductDetails extends StatelessWidget {
                           height: double.infinity,
                           width: double.infinity,
                           decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: NetworkImage(
+                                currentProd.imageUrl,
+                              ),
+                              fit: BoxFit.cover,
+                            ),
                             shape: BoxShape.circle,
                             color: kColorsList[Random().nextInt(4)],
                             // borderRadius: BorderRadius.circular(500),
                           ),
-                          // child: ClipRRect(
-                          //   borderRadius: BorderRadius.circular(500),
-                          //   child: Image.network(
-                          //     'https://i.pinimg.com/564x/e4/07/20/e40720c646c72a70e0b793bfaa8cc37d.jpg',
-                          //     // fit: BoxFit.cover,
-                          //   ),
-                          // ),
                         ),
                         PositionedDirectional(
                           bottom: 0,
@@ -95,7 +107,7 @@ class ProductDetails extends StatelessWidget {
                         Expanded(
                           flex: 2,
                           child: Text(
-                            'Full Color Hoodie',
+                            currentProd.name,
                             style: Theme.of(context).textTheme.headlineMedium,
                             softWrap: true,
                           ),
@@ -107,7 +119,7 @@ class ProductDetails extends StatelessWidget {
                           flex: 1,
                           child: FittedBox(
                             child: Text(
-                              '\$120.45',
+                              '\$${currentProd.price}',
                               style: Theme.of(context).textTheme.headlineMedium,
                             ),
                           ),
@@ -115,12 +127,11 @@ class ProductDetails extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedRow(),
+                  SizeRow(size: currentProd.size),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Text(
-                      'Full color Hoodie. Mutlicolored panels and visionary embroldery '
-                      'on the chest. Made Portugal 100% Cotton',
+                      currentProd.description,
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                   ),

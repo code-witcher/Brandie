@@ -1,7 +1,9 @@
+import 'package:brandie/models/constants.dart';
 import 'package:flutter/material.dart';
 
-class SizedRow extends StatelessWidget {
-  const SizedRow({Key? key}) : super(key: key);
+class SizeRow extends StatelessWidget {
+  const SizeRow({Key? key, required this.size}) : super(key: key);
+  final String size;
 
   @override
   Widget build(BuildContext context) {
@@ -9,18 +11,22 @@ class SizedRow extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
+        children: [
           SizeCard(
             sizeLetter: 'S',
+            size: size,
           ),
           SizeCard(
             sizeLetter: 'M',
+            size: size,
           ),
           SizeCard(
             sizeLetter: 'L',
+            size: size,
           ),
           SizeCard(
             sizeLetter: 'XL',
+            size: size,
           ),
         ],
       ),
@@ -29,12 +35,15 @@ class SizedRow extends StatelessWidget {
 }
 
 class SizeCard extends StatelessWidget {
-  const SizeCard({Key? key, required this.sizeLetter}) : super(key: key);
+  const SizeCard({Key? key, required this.sizeLetter, required this.size})
+      : super(key: key);
   final String sizeLetter;
+  final String size;
 
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: size == sizeLetter ? Theme.of(context).primaryColor : null,
       margin: const EdgeInsets.symmetric(horizontal: 8),
       shape: StadiumBorder(
         side: BorderSide(color: Theme.of(context).primaryColor),
@@ -44,7 +53,9 @@ class SizeCard extends StatelessWidget {
         child: Text(
           sizeLetter,
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                color: Theme.of(context).primaryColor,
+                color: size == sizeLetter
+                    ? kLightColor
+                    : Theme.of(context).primaryColor,
               ),
         ),
       ),

@@ -122,8 +122,8 @@ class AuthWidget extends StatelessWidget {
                           children: [
                             Container(
                               width: 130,
-                              height: 2,
-                              color: Colors.grey,
+                              height: 1,
+                              color: Colors.grey.shade500,
                             ),
                             const SizedBox(
                               width: 8,
@@ -134,8 +134,8 @@ class AuthWidget extends StatelessWidget {
                             ),
                             Container(
                               width: 130,
-                              height: 2,
-                              color: Colors.grey,
+                              height: 1,
+                              color: Colors.grey.shade500,
                             ),
                           ],
                         ),

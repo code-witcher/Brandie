@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:math';
 
 import 'package:brandie/models/constants.dart';
@@ -20,7 +19,8 @@ class CollectionItem extends StatelessWidget {
           CircleAvatar(
             backgroundColor: kColorsList[Random().nextInt(4)],
             radius: 40,
-            backgroundImage: FileImage(File('')),
+            backgroundImage: const NetworkImage(
+                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkiyvPbpWyqRBwmDhxveBFLjtancIDOi3Dnw&usqp=CAU'),
           ),
           const Padding(
             padding: EdgeInsets.all(10.0),

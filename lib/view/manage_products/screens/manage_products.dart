@@ -53,7 +53,12 @@ class ManageProducts extends StatelessWidget {
                             child: Row(
                               children: [
                                 IconButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.of(context).pushNamed(
+                                      AddProduct.routeName,
+                                      arguments: prods.products[i].id,
+                                    );
+                                  },
                                   icon: Icon(
                                     Icons.edit,
                                     color: Theme.of(context).primaryColor,

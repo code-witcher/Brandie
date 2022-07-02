@@ -1,3 +1,5 @@
+import 'package:brandie/helpers/badge.dart';
+import 'package:brandie/models/cart_provider.dart';
 import 'package:brandie/models/constants.dart';
 import 'package:brandie/models/products_provider4.dart';
 import 'package:brandie/view/cart/screens/cart_screen.dart';
@@ -11,6 +13,12 @@ import '../widgets/drawer_widget.dart';
 class MainPage extends StatelessWidget {
   const MainPage({Key? key}) : super(key: key);
   static const routeName = '/main-page';
+
+  Future<void> fetchData(BuildContext context) async {
+    Provider.of<ProductsProvider>(context, listen: false).getProducts();
+
+    return Provider.of<CartProvider>(context, listen: false).getItems();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,21 +36,27 @@ class MainPage extends StatelessWidget {
         ),
         centerTitle: true,
         actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.of(context).pushNamed(CartScreen.routeName);
-            },
-            icon: const Icon(
-              Icons.shopping_cart,
-              color: kTextColor,
+          Badge(
+            label: Consumer<CartProvider>(
+              builder: (ctx, data, child) => FittedBox(
+                child: Text(data.totalQuantity().toString()),
+              ),
+            ),
+            child: IconButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed(CartScreen.routeName);
+              },
+              icon: const Icon(
+                Icons.shopping_cart,
+                color: kTextColor,
+              ),
             ),
           ),
         ],
       ),
       drawer: const DrawerWidget(),
       body: FutureBuilder(
-        future:
-            Provider.of<ProductsProvider>(context, listen: false).getProducts(),
+        future: fetchData(context),
         builder: (ctx, snapshot) => snapshot.connectionState ==
                 ConnectionState.waiting
             ? const Center(

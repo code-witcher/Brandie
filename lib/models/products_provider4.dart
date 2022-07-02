@@ -32,11 +32,11 @@ class ProductsProvider extends ChangeNotifier {
   }
 
   Future<void> addProduct({
-    required name,
-    required size,
-    required description,
+    required String name,
+    required String size,
+    required String description,
     required double price,
-    required imageUrl,
+    required String imageUrl,
   }) async {
     final url = Uri.parse(
         'https://brandie-58806-default-rtdb.firebaseio.com/products.json');
@@ -76,7 +76,7 @@ class ProductsProvider extends ChangeNotifier {
 
     final data = json.decode(response.body) as Map<String, dynamic>;
 
-    print(json.decode(response.body));
+    // print(json.decode(response.body));
     List<Product> _loadedProd = [];
 
     data.forEach((prodId, value) {
@@ -93,12 +93,43 @@ class ProductsProvider extends ChangeNotifier {
       // print('5 * ${_loadedProd.length}');
     });
 
-    print('5 * ${_loadedProd.length}');
     _products = _loadedProd;
     notifyListeners();
   }
 
-  void deleteProduct(prodId) async {
+  Future<void> updateProduct({
+    required String prodId,
+    required String name,
+    required String size,
+    required String description,
+    required double price,
+    required String imageUrl,
+  }) async {
+    final url = Uri.parse(
+      'https://brandie-58806-default-rtdb.firebaseio.com/products/$prodId.json',
+    );
+    await http.patch(url,
+        body: json.encode({
+          'name': name,
+          'size': size,
+          'description': description,
+          'price': price,
+          'imageUrl': imageUrl,
+        }));
+
+    int index = _products.indexWhere((prod) => prod.id == prodId);
+    _products[index] = Product(
+      id: prodId,
+      name: name,
+      size: size,
+      description: description,
+      price: price,
+      imageUrl: imageUrl,
+    );
+    notifyListeners();
+  }
+
+  Future<void> deleteProduct(String prodId) async {
     final url = Uri.parse(
       'https://brandie-58806-default-rtdb.firebaseio.com/products/$prodId.json',
     );

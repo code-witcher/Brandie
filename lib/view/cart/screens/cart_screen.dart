@@ -1,5 +1,8 @@
+import 'package:brandie/models/cart_provider.dart';
+import 'package:brandie/models/orders_provider.dart';
 import 'package:brandie/view/cart/widgets/cart_item.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../models/constants.dart';
 
@@ -9,6 +12,9 @@ class CartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cartProvider = Provider.of<CartProvider>(context);
+    final carts = cartProvider.carts;
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -40,21 +46,31 @@ class CartScreen extends StatelessWidget {
                     style: Theme.of(context).textTheme.headlineLarge,
                   ),
                   const Spacer(),
-                  IconButton(
-                    onPressed: () {},
+                  PopupMenuButton<String>(
                     icon: const Icon(
                       Icons.more_horiz_outlined,
                       color: kIconsColor,
                       size: 32,
                     ),
+                    itemBuilder: (ctx) => [
+                      PopupMenuItem(
+                        child: Text('Clear All'),
+                        onTap: () {
+                          cartProvider.clear();
+                        },
+                      ),
+                    ],
                   ),
                 ],
               ),
             ),
             Expanded(
               child: ListView.builder(
-                itemBuilder: (ctx, i) => const CartItem(),
-                itemCount: 3,
+                itemBuilder: (ctx, i) => CartItem(
+                  carts.values.toList()[i],
+                  carts.keys.toList()[i],
+                ),
+                itemCount: carts.length,
                 itemExtent: 150,
               ),
             ),
@@ -73,7 +89,7 @@ class CartScreen extends StatelessWidget {
                   ),
                   const Spacer(),
                   Text(
-                    '\$325.32',
+                    '\$${cartProvider.totalPrice().toStringAsFixed(2)}',
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
                 ],
@@ -94,32 +110,76 @@ class CartScreen extends StatelessWidget {
                   ),
                   const Spacer(),
                   Text(
-                    '\$35.00',
+                    '\$${(carts.length * 4.35).toStringAsFixed(2)}',
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
                 ],
               ),
             ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size(
-                  MediaQuery.of(context).size.width * 0.8,
-                  60,
-                ),
-                shape: const StadiumBorder(),
-              ),
-              onPressed: () {},
-              child: Text(
-                'Order Now',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: kLightColor,
-                      fontWeight: FontWeight.bold,
-                    ),
-              ),
-            ),
+            OrderButton(carts: carts, cartProvider: cartProvider),
           ],
         ),
       ),
+    );
+  }
+}
+
+class OrderButton extends StatefulWidget {
+  const OrderButton({
+    Key? key,
+    required this.carts,
+    required this.cartProvider,
+  }) : super(key: key);
+
+  final Map<String, Cart> carts;
+  final CartProvider cartProvider;
+
+  @override
+  State<OrderButton> createState() => _OrderButtonState();
+}
+
+class _OrderButtonState extends State<OrderButton> {
+  var _isLoading = false;
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        minimumSize: Size(
+          MediaQuery.of(context).size.width * 0.8,
+          60,
+        ),
+        shape: const StadiumBorder(),
+      ),
+      onPressed: widget.carts.isEmpty
+          ? null
+          : () async {
+              setState(() {
+                _isLoading = true;
+              });
+              await Provider.of<OrdersProvider>(
+                context,
+                listen: false,
+              ).addOrder(
+                carts: widget.carts.values.toList(),
+                totalPrice: widget.cartProvider.totalPrice(),
+              );
+              await widget.cartProvider.clear();
+
+              setState(() {
+                _isLoading = false;
+              });
+            },
+      child: _isLoading
+          ? const CircularProgressIndicator(
+              color: kLightColor,
+            )
+          : Text(
+              'Order Now',
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: kLightColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
     );
   }
 }

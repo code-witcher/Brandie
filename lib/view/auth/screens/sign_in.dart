@@ -11,7 +11,7 @@ class SignUpScreen extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
       ),
-      body: const AuthWidget(),
+      body: AuthWidget(),
     );
   }
 }

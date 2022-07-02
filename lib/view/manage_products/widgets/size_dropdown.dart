@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
 
 class SizeDropDown extends StatefulWidget {
-  const SizeDropDown(this.getSize, {Key? key}) : super(key: key);
+  const SizeDropDown(this.getSize, this.initValue, {Key? key})
+      : super(key: key);
   final void Function(String? value) getSize;
+  final dynamic initValue;
   @override
   State<SizeDropDown> createState() => _SizeDropDownState();
 }
 
 class _SizeDropDownState extends State<SizeDropDown> {
-  String _value = 'XL';
-
   @override
   Widget build(BuildContext context) {
+    String value = widget.initValue ?? 'XL';
     return SizedBox(
       width: 80,
       child: DropdownButton<String>(
         alignment: Alignment.center,
         isExpanded: true,
-        value: _value,
+        value: value,
         items: const [
           DropdownMenuItem(
             value: 'XL',
@@ -40,7 +41,7 @@ class _SizeDropDownState extends State<SizeDropDown> {
           widget.getSize(selectedVal);
 
           setState(() {
-            _value = selectedVal!;
+            value = selectedVal!;
           });
         },
       ),

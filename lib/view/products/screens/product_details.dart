@@ -119,7 +119,7 @@ class ProductDetails extends StatelessWidget {
                           flex: 1,
                           child: FittedBox(
                             child: Text(
-                              '\$${currentProd.price}',
+                              '\$${currentProd.price.toStringAsFixed(2)}',
                               style: Theme.of(context).textTheme.headlineMedium,
                             ),
                           ),

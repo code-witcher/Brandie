@@ -1,3 +1,5 @@
+import 'package:brandie/models/cart_provider.dart';
+import 'package:brandie/models/orders_provider.dart';
 import 'package:brandie/models/products_provider4.dart';
 import 'package:brandie/view/cart/screens/cart_screen.dart';
 import 'package:brandie/view/manage_products/screens/add_product.dart';
@@ -27,8 +29,18 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<ProductsProvider>(
-      create: (ctx) => ProductsProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ProductsProvider>(
+          create: (ctx) => ProductsProvider(),
+        ),
+        ChangeNotifierProvider<CartProvider>(
+          create: (ctx) => CartProvider(),
+        ),
+        ChangeNotifierProvider<OrdersProvider>(
+          create: (ctx) => OrdersProvider(),
+        ),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',

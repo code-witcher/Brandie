@@ -17,7 +17,7 @@ class AddProduct extends StatelessWidget {
 
   final _formKey = GlobalKey<FormState>();
 
-  final Map<String, dynamic> data = {
+  Map<String, dynamic> initValues = {
     'name': '',
     'size': 'XL',
     'description': '',
@@ -34,36 +34,66 @@ class AddProduct extends StatelessWidget {
         .child('${UniqueKey()}.jpg');
     await ref.putFile(imageFile);
 
-    data['imageUrl'] = await ref.getDownloadURL();
-    print(data['imageUrl']);
+    initValues['imageUrl'] = await ref.getDownloadURL();
+    print(initValues['imageUrl']);
   }
 
-  Future<void> _save(BuildContext context) async {
+  Future<void> _save(BuildContext context, String prodId) async {
     if (!_formKey.currentState!.validate()) return;
     _formKey.currentState?.save();
 
     final prodProv = Provider.of<ProductsProvider>(context, listen: false);
 
     try {
-      await prodProv.addProduct(
-          name: data['name'],
-          size: data['size'],
-          description: data['description'],
-          price: double.parse(data['price']),
-          imageUrl: data['imageUrl']);
-    } catch (e) {}
+      if (prodId == null) {
+        await prodProv.addProduct(
+          name: initValues['name'],
+          size: initValues['size'],
+          description: initValues['description'],
+          price: double.parse(initValues['price']),
+          imageUrl: initValues['imageUrl'],
+        );
+      } else {
+        await prodProv.updateProduct(
+          prodId: prodId,
+          name: initValues['name'],
+          size: initValues['size'],
+          description: initValues['description'],
+          price: double.parse(initValues['price']),
+          imageUrl: initValues['imageUrl'],
+        );
+      }
+    } catch (e) {
+      print('in AddProduct line 54 $e');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final dynamic prodId = ModalRoute.of(context)?.settings.arguments;
+    if (prodId != null) {
+      final prods = Provider.of<ProductsProvider>(
+        context,
+        listen: false,
+      ).products;
+      final currentProd = prods.firstWhere((element) => element.id == prodId);
+
+      initValues = {
+        'name': currentProd.name,
+        'size': currentProd.size,
+        'description': currentProd.description,
+        'imageUrl': currentProd.imageUrl,
+        'price': '${currentProd.price}',
+      };
+    }
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Add Product'),
+        title: Text(prodId == null ? 'Add Product' : 'Edit Product'),
         actions: [
           IconButton(
             onPressed: () async {
-              await _save(context);
+              await _save(context, prodId);
               Navigator.of(context).pop();
             },
             icon: Icon(Icons.check),
@@ -80,7 +110,7 @@ class AddProduct extends StatelessWidget {
               children: [
                 AddProductField(
                   hint: 'Product Name',
-                  initialValue: data['name'],
+                  initialValue: initValues['name'],
                   keyboardType: TextInputType.name,
                   textCapitalization: TextCapitalization.words,
                   validator: (value) {
@@ -89,7 +119,7 @@ class AddProduct extends StatelessWidget {
                     }
                   },
                   onSaved: (value) {
-                    data['name'] = value;
+                    initValues['name'] = value;
                   },
                 ),
                 Row(
@@ -98,7 +128,7 @@ class AddProduct extends StatelessWidget {
                       child: AddProductField(
                         prefixIcon: const Icon(Icons.attach_money),
                         hint: 'Price',
-                        initialValue: data['price'],
+                        initialValue: initValues['price'],
                         keyboardType: TextInputType.name,
                         textCapitalization: TextCapitalization.words,
                         validator: (value) {
@@ -110,7 +140,7 @@ class AddProduct extends StatelessWidget {
                           }
                         },
                         onSaved: (value) {
-                          data['price'] = value;
+                          initValues['price'] = value;
                         },
                       ),
                     ),
@@ -118,14 +148,15 @@ class AddProduct extends StatelessWidget {
                       width: 32,
                     ),
                     SizeDropDown((value) {
-                      data['size'] = value;
+                      initValues['size'] = value;
                       print(value);
-                    }),
+                    }, initValues['size']),
                   ],
                 ),
                 AddProductField(
                   hint: 'Description',
                   maxLines: 5,
+                  initialValue: initValues['description'],
                   keyboardType: TextInputType.multiline,
                   textCapitalization: TextCapitalization.sentences,
                   validator: (value) {
@@ -137,7 +168,7 @@ class AddProduct extends StatelessWidget {
                     }
                   },
                   onSaved: (value) {
-                    data['description'] = value;
+                    initValues['description'] = value;
                   },
                 ),
                 ImageWidget(saveImage),
@@ -149,7 +180,7 @@ class AddProduct extends StatelessWidget {
                       padding: const EdgeInsets.all(16),
                     ),
                     onPressed: () async {
-                      await _save(context);
+                      await _save(context, prodId);
                       Navigator.of(context).pop();
                     },
                     icon: const Icon(CupertinoIcons.add),

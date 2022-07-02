@@ -1,7 +1,9 @@
+import 'package:brandie/models/cart_provider.dart';
 import 'package:brandie/models/constants.dart';
 import 'package:brandie/models/products_provider4.dart';
 import 'package:brandie/view/products/screens/product_details.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProductItem extends StatelessWidget {
   const ProductItem({Key? key, required this.product}) : super(key: key);
@@ -60,7 +62,7 @@ class ProductItem extends StatelessWidget {
                         Expanded(
                           child: FittedBox(
                             child: Text(
-                              '\$${product.price}',
+                              '\$${product.price.toStringAsFixed(2)}',
                               style: Theme.of(context).textTheme.bodyLarge,
                             ),
                           ),
@@ -88,7 +90,18 @@ class ProductItem extends StatelessWidget {
                       ),
                     ),
                     child: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Provider.of<CartProvider>(
+                          context,
+                          listen: false,
+                        ).addItem(
+                          prodId: product.id,
+                          name: product.name,
+                          imageUrl: product.imageUrl,
+                          size: product.size,
+                          price: product.price,
+                        );
+                      },
                       icon: Icon(
                         Icons.add,
                         color: Theme.of(context).primaryColor,
